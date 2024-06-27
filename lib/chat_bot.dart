@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:gemini_chat_bot/Model/model.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:intl/intl.dart';
 
 class GeminiChatBot extends StatefulWidget {
   const GeminiChatBot({super.key});
@@ -21,7 +19,7 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
     apiKey: apiKey,
   );
   final List<ModelMessage> prompt = [];
-  final bool isPrompt = true;
+
   Future<void> SendMessage() async {
     final message = promptController.text;
     // * For Prompt
@@ -63,7 +61,11 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
             child: ListView.builder(
               itemBuilder: (context, index) {
                 final message = prompt[index];
-                return UserPrompt(message, index);
+                return UserPrompt(
+                  isPrompt: message.isPrompt,
+                  message: message.message,
+                  date: DateFormat('hh:mm a').format(message.time),
+                );
               },
               itemCount: prompt.length,
             ),
@@ -109,24 +111,35 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
     );
   }
 
-  Container UserPrompt(ModelMessage message, int index) {
+  Container UserPrompt(
+      {required final bool isPrompt,
+      required String message,
+      required String date}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: isPrompt == true ? Colors.green : Colors.grey,
+        color: isPrompt ? Colors.green : Colors.grey,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //TODO For Prompt and respond
           Text(
-            message.message,
+            message,
             style: TextStyle(
-              fontWeight:
-                  isPrompt == index ? FontWeight.bold : FontWeight.normal,
+              fontWeight: isPrompt ? FontWeight.bold : FontWeight.normal,
               fontSize: 18,
-              color: isPrompt == index ? Colors.white : Colors.black,
+              color: isPrompt ? Colors.white : Colors.black,
+            ),
+          ),
+          // * For Prompt and respond time
+          Text(
+            date,
+            style: TextStyle(
+              fontSize: 18,
+              color: isPrompt ? Colors.white : Colors.black,
             ),
           ),
         ],
