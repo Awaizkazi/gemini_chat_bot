@@ -24,6 +24,7 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
     final message = promptController.text;
     // * For Prompt
     setState(() {
+      promptController.clear();
       prompt.add(
         ModelMessage(
           isPrompt: true,
@@ -49,9 +50,10 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: Colors.purple[100],
       appBar: AppBar(
-        backgroundColor: Colors.blue[100],
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple[100],
         title: const Text('AI ChatBot'),
       ),
       body: Column(
@@ -92,10 +94,12 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
                 // ignore: prefer_const_constructors
                 Spacer(),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    SendMessage();
+                  },
                   child: const CircleAvatar(
                     radius: 29,
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.purpleAccent,
                     child: Icon(
                       Icons.send,
                       color: Colors.white,
@@ -117,10 +121,17 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
       required String date}) {
     return Container(
       width: double.infinity,
+      margin: EdgeInsets.symmetric(vertical: 15)
+          .copyWith(left: isPrompt ? 80 : 15, right: isPrompt ? 80 : 15),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: isPrompt ? Colors.green : Colors.grey,
-        borderRadius: BorderRadius.circular(20),
+        color: isPrompt ? Colors.purple : Colors.grey,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+          bottomLeft: isPrompt ? Radius.circular(15) : Radius.zero,
+          bottomRight: isPrompt ? Radius.zero : Radius.circular(20),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
