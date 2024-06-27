@@ -24,11 +24,24 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
   final bool isPrompt = true;
   Future<void> SendMessage() async {
     final message = promptController.text;
+    // * For Prompt
     setState(() {
       prompt.add(
         ModelMessage(
           isPrompt: true,
           message: message,
+          time: DateTime.now(),
+        ),
+      );
+    });
+    // * For respond
+    final content = [Content.text(message)];
+    final response = await model.generateContent(content);
+    setState(() {
+      prompt.add(
+        ModelMessage(
+          isPrompt: false,
+          message: response.text ?? "",
           time: DateTime.now(),
         ),
       );
