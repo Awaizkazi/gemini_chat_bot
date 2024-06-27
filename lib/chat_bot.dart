@@ -50,11 +50,12 @@ class _GeminiChatBotState extends State<GeminiChatBot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[100],
+      backgroundColor: Colors.purpleAccent[100],
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.deepPurple[100],
-        title: const Text('AI ChatBot'),
+        elevation: 3,
+        backgroundColor: Colors.purpleAccent[100],
+        title: const Text('Gemini AI ChatBot'),
       ),
       body: Column(
         children: [
